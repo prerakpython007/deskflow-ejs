@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Employee | OfficeMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+        }
+        .glass-card {
+            background: rgba(30, 30, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .input-modern {
+            background: rgba(15, 15, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .input-modern:focus {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="border-b border-gray-800 bg-black/30 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="ri-building-line text-white text-sm"></i>
+                        </div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">OfficeMS</h1>
+                    </div>
+                    <div class="hidden sm:flex sm:ml-10 space-x-1">
+                        <a href="/departments" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                            <i class="ri-layout-grid-line mr-2"></i>Departments
+                        </a>
+                        <a href="/employees" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                            <i class="ri-team-line mr-2"></i>Employees
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <% if (locals.error) { %>
+            <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-6">
+                <div class="flex items-center gap-3">
+                    <i class="ri-error-warning-line text-red-400 text-xl"></i>
+                    <p class="text-sm text-red-300"><%= error %></p>
+                </div>
+            </div>
+        <% } %>
+        
+        <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="ri-user-settings-line text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold text-white">Edit Employee</h2>
+                        <p class="text-sm text-gray-400 mt-1">Update employee information</p>
+                    </div>
+                </div>
+            </div>
+            
+            <form action="/employees/<%= employee._id %>?_method=PUT" method="POST" class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">First Name <span class="text-red-400">*</span></label>
+                        <input type="text" name="firstName" required
+                               class="input-modern w-full px-4 py-2.5 rounded-xl text-white"
+                               value="<%= employee.firstName %>">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Last Name <span class="text-red-400">*</span></label>
+                        <input type="text" name="lastName" required
+                               class="input-modern w-full px-4 py-2.5 rounded-xl text-white"
+                               value="<%= employee.lastName %>">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Email <span class="text-red-400">*</span></label>
+                        <input type="email" name="email" required
+                               class="input-modern w-full px-4 py-2.5 rounded-xl text-white"
+                               value="<%= employee.email %>">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Phone</label>
+                        <input type="text" name="phone"
+                               class="input-modern w-full px-4 py-2.5 rounded-xl text-white"
+                               value="<%= employee.phone || '' %>">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Job Title <span class="text-red-400">*</span></label>
+                        <input type="text" name="jobTitle" required
+                               class="input-modern w-full px-4 py-2.5 rounded-xl text-white"
+                               value="<%= employee.jobTitle %>">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Department <span class="text-red-400">*</span></label>
+                        <select name="department" required class="input-modern w-full px-4 py-2.5 rounded-xl text-white">
+                            <option value="">Select Department</option>
+                            <% departments.forEach(function(dept) { %>
+                                <option value="<%= dept._id %>" <%= employee.department && employee.department._id.toString() === dept._id.toString() ? 'selected' : '' %>>
+                                    <%= dept.name %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Supervisor</label>
+                        <select name="supervisor" class="input-modern w-full px-4 py-2.5 rounded-xl text-white">
+                            <option value="">None</option>
+                            <% employees.forEach(function(emp) { %>
+                                <option value="<%= emp._id %>" <%= employee.supervisor && employee.supervisor._id && employee.supervisor._id.toString() === emp._id.toString() ? 'selected' : '' %>>
+                                    <%= emp.firstName %> <%= emp.lastName %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Salary</label>
+                        <input type="number" name="salary" step="1000"
+                               class="input-modern w-full px-4 py-2.5 rounded-xl text-white"
+                               value="<%= employee.salary || '' %>">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Date of Birth</label>
+                        <input type="date" name="dateOfBirth"
+                               class="input-modern w-full px-4 py-2.5 rounded-xl text-white"
+                               value="<%= employee.dateOfBirth ? new Date(employee.dateOfBirth).toISOString().split('T')[0] : '' %>">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Status</label>
+                        <label class="flex items-center gap-2 mt-2">
+                            <input type="checkbox" name="isActive" <%= employee.isActive ? 'checked' : '' %> class="w-4 h-4 rounded">
+                            <span class="text-gray-300">Active Employee</span>
+                        </label>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Address</label>
+                        <textarea name="address" rows="2"
+                                  class="input-modern w-full px-4 py-2.5 rounded-xl text-white resize-none"><%= employee.address || '' %></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end gap-3 pt-6 mt-4 border-t border-gray-800">
+                    <a href="/employees" class="px-5 py-2.5 border border-gray-700 rounded-xl text-gray-300 hover:bg-white/5 transition-all">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-medium transition-all shadow-lg">
+                        <i class="ri-save-line mr-2"></i>Update Employee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
