@@ -22,9 +22,16 @@ app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/views'));
 
-// Routes (we'll add these later)
+// Import routes
+const departmentRoutes = require('./routes/departmentRoutes');
+
+// Use routes
+app.use('/departments', departmentRoutes);
+app.use('/api/departments', departmentRoutes);
+
+// Home route
 app.get('/', (req, res) => {
-  res.send('Server is running!');
+  res.redirect('/departments');
 });
 
 const PORT = process.env.PORT || 3000;
