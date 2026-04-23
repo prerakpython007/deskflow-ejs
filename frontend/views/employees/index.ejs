@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees | OfficeMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+        }
+        .glass-card {
+            background: rgba(30, 30, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .employee-card {
+            background: rgba(20, 20, 35, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .employee-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .search-input {
+            background: rgba(15, 15, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+        .pagination-btn {
+            transition: all 0.2s ease;
+        }
+        .pagination-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="border-b border-gray-800 bg-black/30 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="ri-building-line text-white text-sm"></i>
+                        </div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">OfficeMS</h1>
+                    </div>
+                    <div class="hidden sm:flex sm:ml-10 space-x-1">
+                        <a href="/departments" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                            <i class="ri-layout-grid-line mr-2"></i>Departments
+                        </a>
+                        <a href="/employees" class="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 text-white transition-all">
+                            <i class="ri-team-line mr-2"></i>Employees
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-800">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-white">Team Members</h2>
+                        <p class="text-sm text-gray-400 mt-1">Manage your workforce</p>
+                    </div>
+                    <a href="/employees/create" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 shadow-lg">
+                        <i class="ri-add-line"></i> New Employee
+                    </a>
+                </div>
+            </div>
+            
+            <div class="p-6 border-b border-gray-800">
+                <form method="GET" action="/employees" class="space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <i class="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                                <input type="text" 
+                                       name="search" 
+                                       value="<%= filters.search %>"
+                                       placeholder="Search by name, email, or job title..."
+                                       class="search-input w-full pl-10 pr-4 py-2.5 rounded-xl text-white placeholder-gray-500">
+                            </div>
+                        </div>
+                        <select name="department" class="search-input px-4 py-2.5 rounded-xl text-white">
+                            <option value="all" <%= filters.department === 'all' ? 'selected' : '' %>>All Departments</option>
+                            <% departments.forEach(function(dept) { %>
+                                <option value="<%= dept._id %>" <%= filters.department === dept._id.toString() ? 'selected' : '' %>><%= dept.name %></option>
+                            <% }); %>
+                        </select>
+                        <select name="jobTitle" class="search-input px-4 py-2.5 rounded-xl text-white">
+                            <option value="all" <%= filters.jobTitle === 'all' ? 'selected' : '' %>>All Job Titles</option>
+                            <% jobTitles.forEach(function(title) { %>
+                                <option value="<%= title %>" <%= filters.jobTitle === title ? 'selected' : '' %>><%= title %></option>
+                            <% }); %>
+                        </select>
+                        <button type="submit" class="px-6 py-2.5 bg-indigo-500/20 text-indigo-400 rounded-xl hover:bg-indigo-500/30 transition-all">
+                            <i class="ri-filter-line mr-2"></i>Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="divide-y divide-gray-800">
+                <% if (employees.length === 0) { %>
+                    <div class="text-center py-12">
+                        <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-user-line text-4xl text-gray-600"></i>
+                        </div>
+                        <p class="text-gray-400">No employees found</p>
+                        <a href="/employees/create" class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl text-sm">
+                            <i class="ri-add-line"></i> Add First Employee
+                        </a>
+                    </div>
+                <% } else { %>
+                    <% employees.forEach(function(emp) { %>
+                    <div class="employee-card m-4 rounded-xl p-4 cursor-pointer">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl flex items-center justify-center">
+                                    <i class="ri-user-3-line text-indigo-400 text-xl"></i>
+                                </div>
+                                <div>
+                                    <a href="/employees/<%= emp._id %>" class="font-semibold text-white hover:text-indigo-400 transition text-lg">
+                                        <%= emp.firstName %> <%= emp.lastName %>
+                                    </a>
+                                    <div class="flex flex-wrap gap-3 mt-1">
+                                        <span class="text-xs text-gray-400 flex items-center gap-1">
+                                            <i class="ri-mail-line"></i> <%= emp.email %>
+                                        </span>
+                                        <span class="text-xs text-gray-400 flex items-center gap-1">
+                                            <i class="ri-briefcase-line"></i> <%= emp.jobTitle %>
+                                        </span>
+                                        <span class="text-xs text-indigo-400 flex items-center gap-1">
+                                            <i class="ri-building-line"></i> <%= emp.department ? emp.department.name : 'N/A' %>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <% if (emp.supervisor) { %>
+                                    <span class="text-xs text-gray-500 flex items-center gap-1">
+                                        <i class="ri-user-star-line"></i> Reports to: <%= emp.supervisor.firstName %>
+                                    </span>
+                                <% } %>
+                                <div class="flex gap-2">
+                                    <a href="/employees/<%= emp._id %>/edit" class="p-2 bg-indigo-500/20 text-indigo-400 rounded-lg hover:bg-indigo-500/30 transition-all">
+                                        <i class="ri-edit-line"></i>
+                                    </a>
+                                    <form action="/employees/<%= emp._id %>?_method=DELETE" method="POST" class="inline">
+                                        <button type="submit" class="p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all" onclick="return confirm('Delete this employee?')">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                <% } %>
+            </div>
+            
+            <% if (pagination.pages > 1) { %>
+            <div class="px-6 py-4 border-t border-gray-800 flex justify-between items-center">
+                <div class="text-sm text-gray-400">
+                    Showing <%= (pagination.page - 1) * pagination.limit + 1 %> to <%= Math.min(pagination.page * pagination.limit, pagination.total) %> of <%= pagination.total %> employees
+                </div>
+                <div class="flex gap-2">
+                    <% if (pagination.page > 1) { %>
+                        <a href="?page=<%= pagination.page - 1 %><%= filters.search ? '&search=' + filters.search : '' %><%= filters.department !== 'all' ? '&department=' + filters.department : '' %><%= filters.jobTitle !== 'all' ? '&jobTitle=' + filters.jobTitle : '' %>" 
+                           class="pagination-btn px-4 py-2 border border-gray-700 rounded-lg text-gray-300 hover:text-white">
+                            Previous
+                        </a>
+                    <% } %>
+                    <span class="px-4 py-2 bg-indigo-500/20 text-indigo-400 rounded-lg">
+                        Page <%= pagination.page %> of <%= pagination.pages %>
+                    </span>
+                    <% if (pagination.page < pagination.pages) { %>
+                        <a href="?page=<%= pagination.page + 1 %><%= filters.search ? '&search=' + filters.search : '' %><%= filters.department !== 'all' ? '&department=' + filters.department : '' %><%= filters.jobTitle !== 'all' ? '&jobTitle=' + filters.jobTitle : '' %>"
+                           class="pagination-btn px-4 py-2 border border-gray-700 rounded-lg text-gray-300 hover:text-white">
+                            Next
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>

@@ -4,34 +4,33 @@ const path = require('path');
 const methodOverride = require('method-override');
 const connectDB = require('./config/database');
 
-// Load env vars
 dotenv.config();
-
-// Connect to database
 connectDB();
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 
-// View engine setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/views'));
 
-// Import routes
 const departmentRoutes = require('./routes/departmentRoutes');
+const employeeRoutes = require('./routes/employeeRoutes');
 
-// Use routes
 app.use('/departments', departmentRoutes);
 app.use('/api/departments', departmentRoutes);
+app.use('/employees', employeeRoutes);
+app.use('/api/employees', employeeRoutes);
 
-// Home route
 app.get('/', (req, res) => {
-  res.redirect('/departments');
+  res.redirect('/employees');
+});
+
+app.get('/error', (req, res) => {
+  res.render('error', { message: 'An error occurred' });
 });
 
 const PORT = process.env.PORT || 3000;
