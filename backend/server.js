@@ -19,11 +19,13 @@ app.set('views', path.join(__dirname, '../frontend/views'));
 
 const departmentRoutes = require('./routes/departmentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
+const locationRoutes = require('./routes/locationRoutes');
 
 app.use('/departments', departmentRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/employees', employeeRoutes);
 app.use('/api/employees', employeeRoutes);
+app.use('/api/locations', locationRoutes);
 
 app.get('/', (req, res) => {
   res.redirect('/employees');

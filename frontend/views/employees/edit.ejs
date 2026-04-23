@@ -162,6 +162,29 @@
                         <textarea name="address" rows="2"
                                   class="input-modern w-full px-4 py-2.5 rounded-xl text-white resize-none"><%= employee.address || '' %></textarea>
                     </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Country</label>
+                            <select id="country" name="country" class="input-modern w-full px-4 py-2.5 rounded-xl text-white">
+                                <option value="<%= employee.country || '' %>"><%= employee.country || 'Select Country' %></option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">State</label>
+                            <select id="state" name="state" class="input-modern w-full px-4 py-2.5 rounded-xl text-white" <%= !employee.country ? 'disabled' : '' %>>
+                                <option value="<%= employee.state || '' %>"><%= employee.state || 'Select State' %></option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">City</label>
+                            <select id="city" name="city" class="input-modern w-full px-4 py-2.5 rounded-xl text-white" <%= !employee.state ? 'disabled' : '' %>>
+                                <option value="<%= employee.city || '' %>"><%= employee.city || 'Select City' %></option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="flex justify-end gap-3 pt-6 mt-4 border-t border-gray-800">
@@ -175,5 +198,70 @@
             </form>
         </div>
     </main>
+    
+    <script src="/js/location.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const countrySelect = document.getElementById('country');
+            const stateSelect = document.getElementById('state');
+            const citySelect = document.getElementById('city');
+            const existingCountry = '<%= employee.country || "" %>';
+            const existingState = '<%= employee.state || "" %>';
+            const existingCity = '<%= employee.city || "" %>';
+            
+            const response = await fetch('/api/locations/countries');
+            const data = await response.json();
+            const countries = data.data;
+            
+            countrySelect.innerHTML = '<option value="">Select Country</option>';
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                if (country === existingCountry) option.selected = true;
+                countrySelect.appendChild(option);
+            });
+            
+            if (existingCountry) {
+                const stateResponse = await fetch('/api/locations/states', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country: existingCountry })
+                });
+                const stateData = await stateResponse.json();
+                const states = stateData.data;
+                
+                stateSelect.disabled = false;
+                stateSelect.innerHTML = '<option value="">Select State</option>';
+                states.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state;
+                    option.textContent = state;
+                    if (state === existingState) option.selected = true;
+                    stateSelect.appendChild(option);
+                });
+                
+                if (existingState) {
+                    const cityResponse = await fetch('/api/locations/cities', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ country: existingCountry, state: existingState })
+                    });
+                    const cityData = await cityResponse.json();
+                    const cities = cityData.data;
+                    
+                    citySelect.disabled = false;
+                    citySelect.innerHTML = '<option value="">Select City</option>';
+                    cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        if (city === existingCity) option.selected = true;
+                        citySelect.appendChild(option);
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>

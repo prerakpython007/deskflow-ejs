@@ -154,6 +154,29 @@
                         <textarea name="address" rows="2"
                                   class="input-modern w-full px-4 py-2.5 rounded-xl text-white placeholder-gray-500 resize-none"><%= employee && employee.address ? employee.address : '' %></textarea>
                     </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Country</label>
+                            <select id="country" name="country" class="input-modern w-full px-4 py-2.5 rounded-xl text-white">
+                                <option value="">Select Country</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">State</label>
+                            <select id="state" name="state" class="input-modern w-full px-4 py-2.5 rounded-xl text-white" disabled>
+                                <option value="">Select State</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">City</label>
+                            <select id="city" name="city" class="input-modern w-full px-4 py-2.5 rounded-xl text-white" disabled>
+                                <option value="">Select City</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="flex justify-end gap-3 pt-6 mt-4 border-t border-gray-800">
@@ -167,5 +190,7 @@
             </form>
         </div>
     </main>
+    
+    <script src="/js/location.js"></script>
 </body>
 </html>

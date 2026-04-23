@@ -1,0 +1,288 @@
+{
+  "info": {
+    "name": "Office Management System API",
+    "description": "Complete REST API for Office Management System with Departments and Employees",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Departments",
+      "item": [
+        {
+          "name": "Get All Departments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/departments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "departments"]
+            }
+          }
+        },
+        {
+          "name": "Get Single Department",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/departments/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "departments", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Marketing Department\",\n  \"description\": \"Handles all marketing and promotional activities\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/departments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "departments"]
+            }
+          }
+        },
+        {
+          "name": "Update Department",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Marketing & Communications\",\n  \"description\": \"Handles all marketing, branding and communications\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/departments/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "departments", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Department",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/departments/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "departments", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "Get All Employees (with Pagination & Filters)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/employees?page=1&limit=10&search=john&department=dept_id&jobTitle=Developer",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "employees"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                },
+                {
+                  "key": "search",
+                  "value": "john",
+                  "description": "Search by name or email"
+                },
+                {
+                  "key": "department",
+                  "value": "dept_id",
+                  "description": "Filter by department ID"
+                },
+                {
+                  "key": "jobTitle",
+                  "value": "Developer",
+                  "description": "Filter by job title"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Employee",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/employees/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "employees", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Create Employee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"jobTitle\": \"Senior Software Engineer\",\n  \"department\": \"dept_id_here\",\n  \"supervisor\": \"supervisor_id_here\",\n  \"salary\": 85000,\n  \"dateOfBirth\": \"1990-05-15\",\n  \"address\": \"123 Main Street\",\n  \"country\": \"United States\",\n  \"state\": \"California\",\n  \"city\": \"Los Angeles\",\n  \"joinDate\": \"2024-01-15\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/employees",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "employees"]
+            }
+          }
+        },
+        {
+          "name": "Update Employee",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"email\": \"john.smith@example.com\",\n  \"phone\": \"+1987654321\",\n  \"jobTitle\": \"Lead Software Engineer\",\n  \"salary\": 95000,\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/employees/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "employees", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Employee",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/employees/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "employees", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Location API",
+      "item": [
+        {
+          "name": "Get All Countries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/locations/countries",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "locations", "countries"]
+            }
+          }
+        },
+        {
+          "name": "Get States by Country",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"country\": \"India\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/locations/states",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "locations", "states"]
+            }
+          }
+        },
+        {
+          "name": "Get Cities by Country and State",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"country\": \"India\",\n  \"state\": \"Maharashtra\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/locations/cities",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "locations", "cities"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
