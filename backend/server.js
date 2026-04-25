@@ -4,7 +4,10 @@ const path = require('path');
 const methodOverride = require('method-override');
 const connectDB = require('./config/database');
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+
 connectDB();
 
 const app = express();
